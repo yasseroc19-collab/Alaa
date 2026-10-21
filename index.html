@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alaa</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  color: #ff2b2b;
+}
+#intro {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: fadeOut 2s ease-in-out 3.5s forwards;
+}
+#intro svg {
+  width: 50vw;
+  max-width: 250px;
+  height: auto;
+}
+#intro path {
+  fill: none;
+  stroke: #ff2b2b;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: drawHeart 3s ease forwards;
+}
+@keyframes drawHeart { to { stroke-dashoffset: 0; } }
+@keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+#background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 400%;
+  display: flex;
+  flex-wrap: wrap;
+  transform: rotate(-25deg);
+  animation: moveBg 25s linear infinite;
+  z-index: 0;
+}
+.bgText {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(14px, 3vw, 22px);
+  color: rgba(255, 50, 50, 0.3);
+  margin: 4px;
+  letter-spacing: 1px;
+}
+@keyframes moveBg {
+  0% { transform: translate(-60%, -60%) rotate(-25deg); }
+  100% { transform: translate(0, 0) rotate(-25deg); }
+}
+#nameContainer {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards 3.7s;
+}
+#name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 8vw, 90px);
+  color: #ff3d3d;
+  letter-spacing: 3px;
+  animation: breathe 3s ease-in-out 4.2s infinite;
+}
+#subtext {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(16px, 4vw, 30px);
+  color: #ff6b6b;
+  margin-top: 10px;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes breathe { 0%,100%{transform:scale(1);}50%{transform:scale(1.05);} }
+.heartParticle {
+  position: absolute;
+  color: #ff4a4a;
+  font-size: 16px;
+  animation: floatUp 5s linear forwards;
+  z-index: 1;
+}
+@keyframes floatUp { 0%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(-600px) scale(1.5);opacity:0;} }
+#pressBtn {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 30px;
+  background: #ff2b2b;
+  border: none;
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards 4.2s;
+}
+.popup {
+  position: absolute;
+  background: rgba(255,0,0,0.15);
+  border: 1px solid #ff3d3d;
+  color: #ff4a4a;
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(16px,4vw,28px);
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-align: center;
+  opacity: 0;
+  z-index: 20;
+  transform: scale(0);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.popupHeart {
+  position: absolute;
+  color: #ff4a4a;
+  font-size: 16px;
+  opacity: 1;
+  animation: popupFloat 1s forwards;
+}
+@keyframes popupFloat {
+  0%{transform: translate(0,0) scale(1);opacity:1;}
+  100%{transform: translate(var(--x), var(--y)) scale(1.5);opacity:0;}
+}
+@media (max-width: 600px){ #intro svg{width:60vw;} }
+</style>
+</head>
+<body>
+
+<div id="intro">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+    <path d="M10,30 A20,20 0 0,1 50,30 A20,20 0 0,1 90,30 Q90,60 50,90 Q10,60 10,30 Z"/>
+  </svg>
+</div>
+
+<div id="background"></div>
+
+<div id="nameContainer">
+  <div id="name">Alaa</div>
+  <div id="subtext">built with love for the one I love</div>
+</div>
+
+<button id="pressBtn">Press</button>
+
+<script>
+const bg = document.getElementById('background');
+for(let i=0;i<1000;i++){
+  const span=document.createElement('span');
+  span.classList.add('bgText');
+  span.textContent='I love you';
+  bg.appendChild(span);
+}
+function createHeart(){
+  const heart=document.createElement('div');
+  heart.classList.add('heartParticle');
+  heart.textContent='♥';
+  heart.style.left=Math.random()*100+'vw';
+  heart.style.top='90%';
+  heart.style.fontSize=(14+Math.random()*18)+'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),5000);
+}
+setTimeout(()=>setInterval(createHeart,250),3700);
+
+const messages=["your smile","your laugh","your eyes","your kindness","your spirit","the way you talk","your sense of humor","your patience","the way you care for others","your intelligence","your creativity","the way you make me feel safe","your confidence","the little things you do without me asking","your hugs","the way you think about people","your honesty","your loyalty","your warmth","your understanding","the way you forgive","your energy","your style","your taste in music","the way you listen","your courage","your curiosity","your generosity","the way you light up a room","your way of seeing the world","your determination","the way you support me","your dreams","your focus","the way you notice small details","your charm","your spontaneity","the way you make every moment fun","your patience with me","the way you challenge me to be better","your love for life","your empathy","the way you make people feel comfortable","your little quirks","your honesty even when it’s hard","your sweetness","the way you remember things about me","your voice","your presence","your warmth in hugs","your laugh that makes everything better","the way you make me feel like I matter","your confidence in being yourself","the way you smile when you’re happy","your ability to make any day better","the sparkle in your eyes when you’re excited","your calmness when everything feels chaotic","the way you never give up on things you love","your maturity in handling tough moments","your soft side you only show to me","your sarcasm when you’re teasing me","your little “I love yous” that come out of nowhere","the way you touch my hand like it’s natural","your sleepy voice in the morning","your laugh when you’re really trying not to laugh","the way you make silence feel comfortable","your scent","your compassion for everyone","your love for animals","your messy hair that somehow looks perfect","your goofy side you don’t show everyone","the way you protect the people you love","your deep thoughts when you overthink things","the way you look at me when you’re proud","your excitement when you talk about something you love","your ability to stay strong when things get rough","the way you make me laugh when I don’t want to","your random texts that make my whole day","your hugs that feel like home","the way you cheer me up without even trying","your hands that fit perfectly in mine","your confidence when you walk into a room","your shyness when you get complimented","the way you make everything feel right again","your sleepy eyes","your soft giggles","the way you say my name","your protective nature","your boldness when you stand up for what’s right"];
+
+document.getElementById('pressBtn').addEventListener('click',()=>{
+  messages.forEach((msg,i)=>{
+    setTimeout(()=>{
+      const popup=document.createElement('div');
+      popup.classList.add('popup');
+      popup.textContent=msg;
+      popup.style.left=5 + Math.random()*90+'vw';
+      popup.style.top=5 + Math.random()*80+'vh';
+      document.body.appendChild(popup);
+      requestAnimationFrame(()=>{
+        popup.style.opacity=1;
+        popup.style.transform="translate(-50%, -50%) scale(1.3)";
+      });
+      for(let h=0;h<5;h++){
+        const heart=document.createElement('div');
+        heart.classList.add('popupHeart');
+        heart.textContent='♥';
+        heart.style.left=popup.offsetLeft+popup.offsetWidth/2+'px';
+        heart.style.top=popup.offsetTop+'px';
+        const x=(Math.random()-0.5)*100+'px';
+        const y=(Math.random()-0.5)*100+'px';
+        heart.style.setProperty('--x',x);
+        heart.style.setProperty('--y',y);
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),1000);
+      }
+      setTimeout(()=>{
+        popup.style.opacity=0;
+        setTimeout(()=>popup.remove(),500);
+      },3000);
+    },i*800);
+  });
+});
+</script>
+</body>
+</html>
